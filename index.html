@@ -1,7 +1,97 @@
-echo "# DrizzStore" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/andikatyas/DrizzStore.git
-git push -u origin main
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DrizzStore - Top Up Game</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b0d12;color:#fff;font-family:Arial,sans-serif}
+header{padding:20px;background:#12151d;border-bottom:1px solid #292d38}
+.logo{font-size:25px;font-weight:bold;color:#c084fc}
+.logo span{color:#fff}
+header p{color:#a5a9b5;margin-bottom:0}
+main{max-width:850px;margin:auto;padding:20px}
+.hero{padding:25px 20px;border-radius:16px;background:linear-gradient(135deg,#27113d,#111827);border:1px solid #49305f}
+.hero h1{font-size:28px;margin:0 0 10px}
+.hero p{color:#c7c9d1;line-height:1.6}
+.tag{color:#d8b4fe;font-size:12px;letter-spacing:2px}
+h2{font-size:20px;margin-top:28px}
+.games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.game{padding:15px 5px;background:#171b25;border:1px solid #303544;border-radius:12px;text-align:center;cursor:pointer;color:white}
+.game.active{border-color:#c084fc;background:#281638}
+.emoji{font-size:27px;display:block;margin-bottom:8px}
+label{display:block;margin:18px 0 8px;color:#d6d8e0}
+input,select{width:100%;padding:14px;border-radius:9px;border:1px solid #343947;background:#151923;color:white;font-size:15px}
+button{width:100%;padding:15px;border:0;border-radius:9px;background:#a855f7;color:white;font-size:16px;font-weight:bold;margin-top:20px;cursor:pointer}
+.note{font-size:12px;color:#9ca3af;line-height:1.6}
+footer{text-align:center;padding:25px;color:#888;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">D<span>RIZZSTORE</span></div>
+  <p>Top Up Game Favoritmu</p>
+</header>
+<main>
+  <section class="hero">
+    <div class="tag">GAMING • DIGITAL STORE</div>
+    <h1>Top Up Game Jadi Mudah!</h1>
+    <p>Pilih game favoritmu, masukkan data pemain, dan siapkan pesananmu di DrizzStore.</p>
+  </section>
+
+  <h2>1. Pilih Game</h2>
+  <div class="games">
+    <button type="button" class="game active" data-game="Mobile Legends"><span class="emoji">⚔️</span>Mobile Legends</button>
+    <button type="button" class="game" data-game="Free Fire"><span class="emoji">🔥</span>Free Fire</button>
+    <button type="button" class="game" data-game="PUBG Mobile"><span class="emoji">🎯</span>PUBG Mobile</button>
+  </div>
+
+  <h2>2. Data Pemain</h2>
+  <form id="order">
+    <label for="player">ID Pemain</label>
+    <input id="player" placeholder="Masukkan ID pemain" required>
+    <label for="server">Server / Zone ID (jika diperlukan)</label>
+    <input id="server" placeholder="Contoh: 1234">
+    <label for="nominal">Pilih Nominal</label>
+    <select id="nominal" required>
+      <option value="">Pilih game terlebih dahulu</option>
+    </select>
+    <button type="submit">Lanjutkan Pesanan</button>
+  </form>
+  <p class="note">Catatan: Ini masih demo tampilan. Pembayaran dan pengiriman top up otomatis belum diaktifkan. Jangan mengirim uang melalui halaman demo ini.</p>
+</main>
+<footer>© 2026 DrizzStore • Gaming Digital Store</footer>
+
+<script>
+let game="Mobile Legends";
+const products={
+ "Mobile Legends":["86 Diamonds","172 Diamonds","257 Diamonds","344 Diamonds"],
+ "Free Fire":["70 Diamonds","140 Diamonds","355 Diamonds","720 Diamonds"],
+ "PUBG Mobile":["60 UC","325 UC","660 UC","1800 UC"]
+};
+const select=document.getElementById("nominal");
+function updateProducts(){
+ select.innerHTML='<option value="">Pilih nominal</option>';
+ products[game].forEach(p=>{
+  const option=document.createElement("option");
+  option.value=p;option.textContent=p;
+  select.appendChild(option);
+ });
+}
+document.querySelectorAll(".game").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  game=btn.dataset.game;
+  document.querySelectorAll(".game").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  updateProducts();
+ });
+});
+document.getElementById("order").addEventListener("submit",e=>{
+ e.preventDefault();
+ alert("Demo DrizzStore\\nGame: "+game+"\\nID: "+document.getElementById("player").value+"\\nNominal: "+select.value+"\\n\\nPesanan belum dikirim. Sistem pembayaran otomatis belum aktif.");
+});
+updateProducts();
+</script>
+</body>
+</html>
