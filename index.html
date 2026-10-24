@@ -1,97 +1,544 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DrizzStore - Top Up Game</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#0b0d12;color:#fff;font-family:Arial,sans-serif}
-header{padding:20px;background:#12151d;border-bottom:1px solid #292d38}
-.logo{font-size:25px;font-weight:bold;color:#c084fc}
-.logo span{color:#fff}
-header p{color:#a5a9b5;margin-bottom:0}
-main{max-width:850px;margin:auto;padding:20px}
-.hero{padding:25px 20px;border-radius:16px;background:linear-gradient(135deg,#27113d,#111827);border:1px solid #49305f}
-.hero h1{font-size:28px;margin:0 0 10px}
-.hero p{color:#c7c9d1;line-height:1.6}
-.tag{color:#d8b4fe;font-size:12px;letter-spacing:2px}
-h2{font-size:20px;margin-top:28px}
-.games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.game{padding:15px 5px;background:#171b25;border:1px solid #303544;border-radius:12px;text-align:center;cursor:pointer;color:white}
-.game.active{border-color:#c084fc;background:#281638}
-.emoji{font-size:27px;display:block;margin-bottom:8px}
-label{display:block;margin:18px 0 8px;color:#d6d8e0}
-input,select{width:100%;padding:14px;border-radius:9px;border:1px solid #343947;background:#151923;color:white;font-size:15px}
-button{width:100%;padding:15px;border:0;border-radius:9px;background:#a855f7;color:white;font-size:16px;font-weight:bold;margin-top:20px;cursor:pointer}
-.note{font-size:12px;color:#9ca3af;line-height:1.6}
-footer{text-align:center;padding:25px;color:#888;font-size:12px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DrizzStore - Top Up Game</title>
+  <meta name="description" content="Top up game favoritmu di DrizzStore. Mobile Legends, Free Fire, dan PUBG Mobile.">
+  <meta name="theme-color" content="#100d1c">
+
+  <style>
+    :root {
+      --bg: #100d1c;
+      --panel: #1b172a;
+      --purple: #8b5cf6;
+      --text: #f8f7ff;
+      --muted: #aaa5bd;
+      --border: #342d49;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 18px 5%;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .brand span {
+      color: var(--purple);
+    }
+
+    .status {
+      font-size: 12px;
+      color: #d4c5ff;
+      background: #29203f;
+      padding: 8px 12px;
+      border-radius: 20px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 48px 18px 30px;
+      background: radial-gradient(ellipse at top, #302052 0%, var(--bg) 70%);
+    }
+
+    .hero h1 {
+      font-size: clamp(29px, 6vw, 45px);
+      line-height: 1.2;
+      margin-bottom: 13px;
+    }
+
+    .hero h1 span {
+      color: #a78bfa;
+    }
+
+    .hero p {
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 500px;
+      margin: auto;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 960px;
+      width: 92%;
+      margin: 0 auto;
+      padding-bottom: 45px;
+    }
+
+    .section-title {
+      font-size: 19px;
+      margin: 27px 0 15px;
+    }
+
+    .games {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 13px;
+    }
+
+    .game-card {
+      cursor: pointer;
+      text-align: left;
+      color: var(--text);
+      background: var(--panel);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+      transition: 0.2s;
+      min-width: 0;
+    }
+
+    .game-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--purple);
+    }
+
+    .game-card.active {
+      border-color: #a78bfa;
+      background: #29203f;
+      box-shadow: 0 0 0 2px #8b5cf622;
+    }
+
+    .game-card img {
+      width: 100%;
+      max-width: 110px;
+      aspect-ratio: 1;
+      display: block;
+      object-fit: cover;
+      border-radius: 17px;
+      margin: 0 auto 12px;
+      background: #302943;
+    }
+
+    .game-card h3 {
+      font-size: 14px;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .game-card small {
+      display: block;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 5px;
+      font-size: 11px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 20px;
+      border-radius: 16px;
+      margin-top: 18px;
+    }
+
+    .step {
+      display: inline-flex;
+      width: 27px;
+      height: 27px;
+      justify-content: center;
+      align-items: center;
+      background: var(--purple);
+      border-radius: 8px;
+      margin-right: 8px;
+      font-size: 13px;
+    }
+
+    label {
+      display: block;
+      color: #e8e4f5;
+      font-size: 13px;
+      margin: 17px 0 8px;
+    }
+
+    input, select {
+      width: 100%;
+      min-height: 47px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #120f20;
+      color: white;
+      padding: 12px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--purple);
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+
+    .summary {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .summary span:first-child {
+      color: var(--muted);
+    }
+
+    .price {
+      color: #c4b5fd;
+      font-weight: 800;
+    }
+
+    .buy-button {
+      width: 100%;
+      margin-top: 18px;
+      border: 0;
+      border-radius: 11px;
+      padding: 15px;
+      font-size: 15px;
+      font-weight: bold;
+      color: white;
+      background: linear-gradient(100deg, #7c3aed, #9b6bfa);
+      cursor: pointer;
+    }
+
+    .buy-button:hover {
+      filter: brightness(1.1);
+    }
+
+    .notice {
+      background: #29203a;
+      border: 1px solid #51406f;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 15px;
+      font-size: 12px;
+      color: #ded5f8;
+      line-height: 1.7;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding: 24px 12px;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 15px 4%;
+      }
+
+      .brand {
+        font-size: 21px;
+      }
+
+      .status {
+        font-size: 10px;
+        padding: 7px 9px;
+      }
+
+      .games {
+        gap: 8px;
+      }
+
+      .game-card {
+        padding: 8px 5px;
+        border-radius: 12px;
+      }
+
+      .game-card img {
+        border-radius: 12px;
+      }
+
+      .game-card h3 {
+        font-size: 11px;
+      }
+
+      .game-card small {
+        font-size: 10px;
+      }
+
+      .panel {
+        padding: 15px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<header>
-  <div class="logo">D<span>RIZZSTORE</span></div>
-  <p>Top Up Game Favoritmu</p>
-</header>
-<main>
+  <header>
+    <div class="brand">DRIZZ<span>STORE</span></div>
+    <div class="status">● Game Store</div>
+  </header>
+
   <section class="hero">
-    <div class="tag">GAMING • DIGITAL STORE</div>
-    <h1>Top Up Game Jadi Mudah!</h1>
-    <p>Pilih game favoritmu, masukkan data pemain, dan siapkan pesananmu di DrizzStore.</p>
+    <h1>Top Up Game <span>Lebih Mudah</span></h1>
+    <p>
+      Pilih game favoritmu, masukkan ID pemain, lalu pilih nominal
+      top up yang kamu inginkan.
+    </p>
   </section>
 
-  <h2>1. Pilih Game</h2>
-  <div class="games">
-    <button type="button" class="game active" data-game="Mobile Legends"><span class="emoji">⚔️</span>Mobile Legends</button>
-    <button type="button" class="game" data-game="Free Fire"><span class="emoji">🔥</span>Free Fire</button>
-    <button type="button" class="game" data-game="PUBG Mobile"><span class="emoji">🎯</span>PUBG Mobile</button>
-  </div>
+  <main class="container">
+    <h2 class="section-title">1. Pilih Game</h2>
 
-  <h2>2. Data Pemain</h2>
-  <form id="order">
-    <label for="player">ID Pemain</label>
-    <input id="player" placeholder="Masukkan ID pemain" required>
-    <label for="server">Server / Zone ID (jika diperlukan)</label>
-    <input id="server" placeholder="Contoh: 1234">
-    <label for="nominal">Pilih Nominal</label>
-    <select id="nominal" required>
-      <option value="">Pilih game terlebih dahulu</option>
-    </select>
-    <button type="submit">Lanjutkan Pesanan</button>
-  </form>
-  <p class="note">Catatan: Ini masih demo tampilan. Pembayaran dan pengiriman top up otomatis belum diaktifkan. Jangan mengirim uang melalui halaman demo ini.</p>
-</main>
-<footer>© 2026 DrizzStore • Gaming Digital Store</footer>
+    <div class="games">
+      <button type="button" class="game-card active"
+        data-game="ml" onclick="selectGame('ml', this)">
+        <img
+          src="https://play-lh.googleusercontent.com/MztmLpB1-_eFbHnqNzzvzl5zjiOH2BEb0D71uBxZYf_4BEmW3QEPWODhRtyqY7Qz4wRLwQ--Rg1RAjOFqtHSs-o%3Dw240-h480"
+          alt="Mobile Legends"
+          onerror="this.style.display='none'">
+        <h3>Mobile Legends</h3>
+        <small>Diamond</small>
+      </button>
 
-<script>
-let game="Mobile Legends";
-const products={
- "Mobile Legends":["86 Diamonds","172 Diamonds","257 Diamonds","344 Diamonds"],
- "Free Fire":["70 Diamonds","140 Diamonds","355 Diamonds","720 Diamonds"],
- "PUBG Mobile":["60 UC","325 UC","660 UC","1800 UC"]
-};
-const select=document.getElementById("nominal");
-function updateProducts(){
- select.innerHTML='<option value="">Pilih nominal</option>';
- products[game].forEach(p=>{
-  const option=document.createElement("option");
-  option.value=p;option.textContent=p;
-  select.appendChild(option);
- });
-}
-document.querySelectorAll(".game").forEach(btn=>{
- btn.addEventListener("click",()=>{
-  game=btn.dataset.game;
-  document.querySelectorAll(".game").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  updateProducts();
- });
-});
-document.getElementById("order").addEventListener("submit",e=>{
- e.preventDefault();
- alert("Demo DrizzStore\\nGame: "+game+"\\nID: "+document.getElementById("player").value+"\\nNominal: "+select.value+"\\n\\nPesanan belum dikirim. Sistem pembayaran otomatis belum aktif.");
-});
-updateProducts();
-</script>
+      <button type="button" class="game-card"
+        data-game="ff" onclick="selectGame('ff', this)">
+        <img
+          src="https://play-lh.googleusercontent.com/JT88XmsHoGDio7FxONwh382DhuTxuccfMmWFDtRBFjilySzNqWOCxUhqm8IhBKzQSwVrW2HWp_XvSgKFwi3ETA=s180"
+          alt="Free Fire"
+          onerror="this.style.display='none'">
+        <h3>Free Fire</h3>
+        <small>Diamond</small>
+      </button>
+
+      <button type="button" class="game-card"
+        data-game="pubg" onclick="selectGame('pubg', this)">
+        <img
+          src="https://play-lh.googleusercontent.com/Se7jR6A5R0Mk9ClaIguf46yi2K3k32JsqKb3gAtrktIh3JwnFfxrQRmG9GLvdMpbxbMrReUOxzDkStxGxNo-5Q%3Dw240-h480"
+          alt="PUBG Mobile"
+          onerror="this.style.display='none'">
+        <h3>PUBG Mobile</h3>
+        <small>UC</small>
+      </button>
+    </div>
+
+    <section class="panel">
+      <h2><span class="step">2</span>Masukkan Data Pemain</h2>
+
+      <label for="playerId">User ID</label>
+      <input id="playerId" type="text"
+        placeholder="Masukkan User ID"
+        autocomplete="off">
+
+      <div id="serverField">
+        <label for="serverId">Zone ID / Server ID</label>
+        <input id="serverId" type="text"
+          placeholder="Masukkan Zone ID"
+          autocomplete="off">
+      </div>
+
+      <p class="hint" id="idHint">
+        Pastikan User ID dan Zone ID benar sebelum melanjutkan.
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2><span class="step">3</span>Pilih Nominal</h2>
+
+      <label for="nominal">Pilih produk</label>
+      <select id="nominal" onchange="updateSummary()"></select>
+
+      <div class="summary">
+        <span>Game</span>
+        <strong id="summaryGame">Mobile Legends</strong>
+      </div>
+
+      <div class="summary">
+        <span>Produk</span>
+        <strong id="summaryProduct">86 Diamond</strong>
+      </div>
+
+      <div class="summary">
+        <span>Total harga contoh</span>
+        <strong class="price" id="summaryPrice">Rp20.000</strong>
+      </div>
+
+      <button type="button" class="buy-button" onclick="createOrder()">
+        Lanjutkan Pesanan
+      </button>
+
+      <div class="notice">
+        <strong>Informasi penting:</strong><br>
+        Website ini masih versi demo. Harga hanya contoh, pembayaran
+        belum terhubung, dan diamond/UC belum dikirim secara otomatis.
+        Jangan melakukan pembayaran berdasarkan halaman demo ini.
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <strong>DRIZZSTORE</strong><br>
+    Tempat top up game favoritmu.<br>
+    © <span id="year"></span> DrizzStore. All rights reserved.
+  </footer>
+
+  <script>
+    const games = {
+      ml: {
+        name: "Mobile Legends",
+        productName: "Diamond",
+        products: [
+          { name: "86 Diamond", price: 20000 },
+          { name: "172 Diamond", price: 39000 },
+          { name: "257 Diamond", price: 58000 },
+          { name: "344 Diamond", price: 77000 },
+          { name: "706 Diamond", price: 155000 }
+        ]
+      },
+
+      ff: {
+        name: "Free Fire",
+        productName: "Diamond",
+        products: [
+          { name: "70 Diamond", price: 10000 },
+          { name: "140 Diamond", price: 19000 },
+          { name: "355 Diamond", price: 46000 },
+          { name: "720 Diamond", price: 90000 },
+          { name: "1450 Diamond", price: 180000 }
+        ]
+      },
+
+      pubg: {
+        name: "PUBG Mobile",
+        productName: "UC",
+        products: [
+          { name: "60 UC", price: 15000 },
+          { name: "325 UC", price: 75000 },
+          { name: "660 UC", price: 145000 },
+          { name: "1800 UC", price: 370000 },
+          { name: "3850 UC", price: 740000 }
+        ]
+      }
+    };
+
+    let selectedGame = "ml";
+
+    function rupiah(value) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        maximumFractionDigits: 0
+      }).format(value);
+    }
+
+    function selectGame(gameKey, button) {
+      selectedGame = gameKey;
+
+      document.querySelectorAll(".game-card").forEach(card => {
+        card.classList.remove("active");
+      });
+
+      button.classList.add("active");
+
+      const game = games[gameKey];
+
+      document.getElementById("summaryGame").textContent = game.name;
+      document.getElementById("idHint").textContent =
+        gameKey === "pubg"
+          ? "Masukkan Character ID PUBG Mobile dengan benar."
+          : gameKey === "ff"
+            ? "Masukkan Player ID Free Fire dengan benar."
+            : "Masukkan User ID dan Zone ID Mobile Legends dengan benar.";
+
+      document.getElementById("serverField").style.display =
+        gameKey === "ml" ? "block" : "none";
+
+      const nominal = document.getElementById("nominal");
+      nominal.innerHTML = "";
+
+      game.products.forEach((product, index) => {
+        const option = document.createElement("option");
+        option.value = index;
+        option.textContent = product.name + " — " + rupiah(product.price);
+        nominal.appendChild(option);
+      });
+
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const game = games[selectedGame];
+      const index = Number(document.getElementById("nominal").value || 0);
+      const product = game.products[index];
+
+      if (!product) return;
+
+      document.getElementById("summaryGame").textContent = game.name;
+      document.getElementById("summaryProduct").textContent = product.name;
+      document.getElementById("summaryPrice").textContent =
+        rupiah(product.price);
+    }
+
+    function createOrder() {
+      const playerId = document.getElementById("playerId").value.trim();
+      const serverId = document.getElementById("serverId").value.trim();
+      const game = games[selectedGame];
+      const index = Number(document.getElementById("nominal").value || 0);
+      const product = game.products[index];
+
+      if (!playerId) {
+        alert("Silakan masukkan User ID atau Character ID terlebih dahulu.");
+        document.getElementById("playerId").focus();
+        return;
+      }
+
+      if (selectedGame === "ml" && !serverId) {
+        alert("Silakan masukkan Zone ID Mobile Legends.");
+        document.getElementById("serverId").focus();
+        return;
+      }
+
+      const detailServer = selectedGame === "ml"
+        ? "\nZone ID: " + serverId
+        : "";
+
+      alert(
+        "RINGKASAN PESANAN DEMO\n\n" +
+        "Game: " + game.name + "\n" +
+        "Player ID: " + playerId +
+        detailServer + "\n" +
+        "Produk: " + product.name + "\n" +
+        "Harga contoh: " + rupiah(product.price) +
+        "\n\nPesanan belum dibuat dan belum dibayar. " +
+        "Sistem pembayaran belum terhubung."
+      );
+    }
+
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+
+    selectGame("ml", document.querySelector('[data-game="ml"]'));
+  </script>
 </body>
 </html>
